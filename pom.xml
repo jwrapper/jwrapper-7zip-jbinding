@@ -11,13 +11,13 @@
 
 	<groupId>com.carrotgarden.jwrapper</groupId>
 	<artifactId>jwrapper-7zip-jbinding</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 
 	<scm>
 		<url>https://github.com/jwrapper/jwrapper-7zip-jbinding</url>
 		<connection>scm:git:git://github.com/jwrapper/jwrapper-7zip-jbinding.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/jwrapper/jwrapper-7zip-jbinding.git</developerConnection>
-		<tag>jwrapper-7zip-jbinding-1.0.0</tag>
+		<tag>master</tag>
 	</scm>
 
 	<description>${project.organization.name} JWrapper 7zip Jbinding</description>
