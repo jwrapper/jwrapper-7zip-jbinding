@@ -1,0 +1,182 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.carrotgarden.base</groupId>
+		<artifactId>carrot-archon</artifactId>
+		<version>1.6.0</version>
+		<relativePath />
+	</parent>
+
+	<groupId>com.carrotgarden.jwrapper</groupId>
+	<artifactId>jwrapper-7zip-jbinding</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<scm>
+		<url>https://github.com/jwrapper/jwrapper-7zip-jbinding</url>
+		<connection>scm:git:git://github.com/jwrapper/jwrapper-7zip-jbinding.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/jwrapper/jwrapper-7zip-jbinding.git</developerConnection>
+		<tag>master</tag>
+	</scm>
+
+	<description>${project.organization.name} JWrapper 7zip Jbinding</description>
+
+	<properties>
+
+		<bindingsName>sevenzipjbinding</bindingsName>
+		<lib7zVersion>4.65</lib7zVersion>
+		<bindingsVersion>1.06</bindingsVersion>
+		<bindingsReleaseStage>rc</bindingsReleaseStage>
+		<bindingsImplStage>extr-only</bindingsImplStage>
+		<bindingsPlatform>AllPlatforms</bindingsPlatform>
+		<folderName>${lib7zVersion}-${bindingsVersion}${bindingsReleaseStage}-${bindingsImplStage}</folderName>
+		<packageVersion>${lib7zVersion}-${bindingsVersion}-${bindingsReleaseStage}-${bindingsImplStage}</packageVersion>
+		<packageName>${bindingsName}-${packageVersion}-${bindingsPlatform}</packageName>
+		<bindingsURL>http://downloads.sourceforge.net/project/sevenzipjbind/7-Zip-JBinding/${folderName}</bindingsURL>
+
+	</properties>
+
+	<dependencies>
+
+	</dependencies>
+
+	<build>
+
+		<plugins>
+
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<id>download-bindings</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<unpack>true</unpack>
+							<url>${bindingsURL}/${packageName}.zip</url>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>extract-sources</id>
+						<phase>validate</phase>
+						<configuration>
+							<tasks>
+								<unzip src="target/${packageName}/java-src.zip" dest="target/${bindingsName}" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>extract-binaries</id>
+						<phase>validate</phase>
+						<configuration>
+							<tasks>
+								<unzip src="target/${packageName}/lib/${bindingsName}.jar"
+									dest="target/classes" />
+								<unzip
+									src="target/${packageName}/lib/${bindingsName}-${bindingsPlatform}.jar"
+									dest="target/classes" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>target/${bindingsName}</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											wagon-maven-plugin
+										</artifactId>
+										<versionRange>
+											[0,)
+										</versionRange>
+										<goals>
+											<goal>download</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.googlecode.maven-download-plugin
+										</groupId>
+										<artifactId>
+											maven-download-plugin
+										</artifactId>
+										<versionRange>
+											[0,)
+										</versionRange>
+										<goals>
+											<goal>wget</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>
